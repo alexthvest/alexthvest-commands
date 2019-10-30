@@ -27,6 +27,7 @@ Commands system with roles and type converters
 
 * [Executor(options)](#Executor)
 * [Command(options)](#Command)
+* [Param](#Param)
 * [Converter(type, handler)](#Converter)
 * [Role(options)](#Role)
 
@@ -48,6 +49,14 @@ Commands system with roles and type converters
 | commands | <code>Array.<Command></code> | List of sub commands |
 | params | <code>Object.<Param></code> | List of commands parameters |
 | execute | <code>Function(object)</object> | Command action method |
+
+<a name="Param"></a>
+### Param
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| type | <code>Any<code> | Parameter type |
+| isParams | <code>Boolean</code> | (like C# params) variable number of arguments |
 
 <a name="Converter"></a>
 ### Converter(type, handler)
