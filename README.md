@@ -36,8 +36,8 @@ Commands system with roles and type converters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| commands | Array.<Command> | List of commands |
-| converters | Array.<Converter> | List of converters |
+| commands | Array.&lt;Command&gt; | List of commands |
+| converters | Array.&lt;Converter&gt; | List of converters |
 | defaultRole | Role | Default role if execute method role is null |
 
 <a name="Command"></a>
@@ -46,8 +46,8 @@ Commands system with roles and type converters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | command | <code>String | RegExp</code> | Command |
-| commands | <code>Array.<Command></code> | List of sub commands |
-| params | <code>Object.<Param></code> | List of commands parameters |
+| commands | <code>Array.&lt;Command&gt;</code> | List of sub commands |
+| params | <code>Object.&lt;Param&gt;</code> | List of commands parameters |
 | execute | <code>Function(object)</object> | Command action method |
 
 <a name="Param"></a>
@@ -72,5 +72,5 @@ Commands system with roles and type converters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | name | <code>String</code> | Role name |
-| extend | <code>Array.<Role></code> | Parent roles |
-| commands | <code>Array.<Command></code> | List of available commands |
+| extend | <code>Array.&lt;Role&gt;</code> | Parent roles |
+| commands | <code>Array.&lt;Command&gt;</code> | List of available commands |
