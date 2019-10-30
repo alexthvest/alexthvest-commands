@@ -1,6 +1,6 @@
 {
   "name": "@alexthvest/commands",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Commands execution",
   "main": "lib/index.js",
   "keywords": ["commands", "roles", "executor"],
