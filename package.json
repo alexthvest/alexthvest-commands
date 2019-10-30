@@ -5,5 +5,5 @@
   "main": "lib/index.js",
   "keywords": ["commands", "roles", "executor"],
   "author": "alexthvest",
-  "license": "ISC"
+  "license": "MIT"
 }
