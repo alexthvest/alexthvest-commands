@@ -1,4 +1,4 @@
-const { Command, Converter, Role, Executor } = require('@alexthvest/commands');
+const { Command, Converter, Executor } = require('@alexthvest/commands');
 
 class User {
     constructor(name) {
@@ -8,52 +8,37 @@ class User {
 
 const userConverter = new Converter(User, value => new User(value));
 
-const create = new Command({
-    command: 'create',
+const create = new Command('create', {
     params: {
         name: {
             type: String,
             isParams: true
         }
     },
-    execute: (ctx) => {
-        const { name } = ctx.params;
-        console.log(`New guild created: ${name.join(' ')}`);
-    }
+    execute: (params, context) => console.log(`New guild created: ${params.name.join(' ')}`);
 });
 
-const invite = new Command({
-    command: 'invite',
+const invite = new Command('invite', {
     params: {
         user: User
     },
-    execute: (ctx) => {
-        const { user } = ctx.params;
-        console.log(`New user is invited to guild: ${user.name}`);
-    }
+    execute: (params, context) => console.log(`New user is invited to guild: ${params.user.name}`);
 });
 
-const guild = new Command({
-    command: 'guild',
+const remove = new Command('remove', {
+    access: (params, context) => context.user.isCreator,
+    execute: (params, context) => console.log(`Guild removed`)
+})
+
+const guild = new Command('guild', {
     commands: [create, invite]
 })
 
-const userRole = new Role({
-    name: 'user',
-    commands: [guild]
-});
-
-const adminRole = new Role({
-    name: 'admin',
-    extend: [userRole],
-    commands: []
-});
-
 const executor = new Executor({
-    defaultRole: userRole,
     commands: [guild],
     converters: [userConverter]
 });
 
 executor.execute('guild create My New Guild').catch(console.error);
 executor.execute('guild invite alexthvest').catch(console.error);
+executor.execute('guild remove', { user: { isCreator: true } }).catch(console.error);
