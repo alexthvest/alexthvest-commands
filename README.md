@@ -17,7 +17,7 @@ Commands system with type converters and access system
         }
     }
 
-    const userConverter = new Converter(User, value => new User(value));
+    const userConverter = new Converter(User, (value, context) => new User(value));
 
     const create = new Command('create', {
         params: {

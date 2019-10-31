@@ -6,7 +6,7 @@ class User {
     }
 }
 
-const userConverter = new Converter(User, value => new User(value));
+const userConverter = new Converter(User, (value, context) => new User(value));
 
 const create = new Command('create', {
     aliases: ['создать'],
