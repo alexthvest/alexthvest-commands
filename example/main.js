@@ -1,4 +1,4 @@
-const { Command, Converter, Executor } = require('@alexthvest/commands');
+const { Command, Converter, Executor } = require('../lib'); // @alexthvest/commands
 
 class User {
     constructor(name) {
@@ -9,6 +9,7 @@ class User {
 const userConverter = new Converter(User, value => new User(value));
 
 const create = new Command('create', {
+    aliases: ['создать'],
     params: {
         name: {
             type: String,
@@ -39,6 +40,6 @@ const executor = new Executor({
     converters: [userConverter]
 });
 
-executor.execute('guild create My New Guild').catch(console.error);
+executor.execute('guild создать My New Guild').catch(console.error);
 executor.execute('guild invite alexthvest').catch(console.error);
 executor.execute('guild remove', { user: { isCreator: true } }).catch(console.error);
