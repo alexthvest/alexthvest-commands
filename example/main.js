@@ -1,4 +1,4 @@
-const { Command, Converter, Executor } = require('@alexthvest/commands');
+const { Command, Converter, Executor } = require('../lib'); // @alexthvest/commands
 
 class User {
     constructor(name) {
@@ -15,14 +15,14 @@ const create = new Command('create', {
             isParams: true
         }
     },
-    execute: (params, context) => console.log(`New guild created: ${params.name.join(' ')}`);
+    execute: (params, context) => console.log(`New guild created: ${params.name.join(' ')}`)
 });
 
 const invite = new Command('invite', {
     params: {
         user: User
     },
-    execute: (params, context) => console.log(`New user is invited to guild: ${params.user.name}`);
+    execute: (params, context) => console.log(`New user is invited to guild: ${params.user.name}`)
 });
 
 const remove = new Command('remove', {
@@ -31,7 +31,7 @@ const remove = new Command('remove', {
 })
 
 const guild = new Command('guild', {
-    commands: [create, invite]
+    commands: [create, invite, remove]
 })
 
 const executor = new Executor({
