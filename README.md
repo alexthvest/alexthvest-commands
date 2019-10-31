@@ -1,6 +1,6 @@
 # @alexthvest/commands
 
-Commands system with roles and type converters
+Commands system with type converters and access system
 
 ## Installation
 
@@ -9,68 +9,90 @@ Commands system with roles and type converters
 ## Usage
 
 ``` js
-    const { Executor } = require('@alexthvest/commands');
+    const { Command, Converter, Executor } = require('@alexthvest/commands');
 
-    const executor = new Executor({
-        commands: [], // List of commands
-        converters: [] // List of type converters
-        defaultRole: null // Default role
+    class User {
+        constructor(name) {
+            this.name = name;
+        }
+    }
+
+    const userConverter = new Converter(User, value => new User(value));
+
+    const create = new Command('create', {
+        params: {
+            name: {
+                type: String,
+                isParams: true
+            }
+        },
+        execute: (params, context) => console.log(`New guild created: ${params.name.join(' ')}`)
     });
 
-    // role - some Role
-    // context - additional context for command
-    executor.execute('some input string', role, context)
-        .catch(console.error);
+    const invite = new Command('invite', {
+        params: {
+            user: User
+        },
+        execute: (params, context) => console.log(`New user is invited to guild: ${params.user.name}`)
+    });
+
+    const remove = new Command('remove', {
+        access: (params, context) => context.user.isCreator,
+        execute: (params, context) => console.log(`Guild removed`)
+    })
+
+    const guild = new Command('guild', {
+        commands: [create, invite, remove]
+    })
+
+    const executor = new Executor({
+        commands: [guild],
+        converters: [userConverter]
+    });
+
+    executor.execute('guild create My New Guild').catch(console.error);
+    executor.execute('guild invite alexthvest').catch(console.error);
+    executor.execute('guild remove', { user: { isCreator: true } }).catch(console.error);
 ```
 
 ## API Documentation
 
 * [Executor(options)](#Executor)
-* [Command(options)](#Command)
+* [Command(command, options)](#Command)
 * [Param](#Param)
 * [Converter(type, handler)](#Converter)
-* [Role(options)](#Role)
 
 <a name="Executor"></a>
 ### Executor(options)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| commands | <code>Command[]</code> | List of commands |
-| converters | <code>Converter[]</code> | List of converters |
-| defaultRole | <code>Role</code> | Default role if execute method role is null |
+| options.commands | Command[] | List of commands |
+| options.converters | Converter[] | List of converters |
 
 <a name="Command"></a>
-### Command(options)
+### Command(command, options)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| command | <code>String | RegExp</code> | Command |
-| commands | <code>Command[]</code> | List of sub commands |
-| params | <code>Object</code> | List of commands parameters |
-| execute | <code>Function(object)</object> | Command action method |
+| command | String | RegExp | Command |
+| options.commands | Command[] | List of sub commands |
+| options.params | Object&lt;String, Param&gt; | List of commands parameters |
+| options.execute | Function(object, object) | Command action method |
+| options.access | Function(object, object): boolean | Command access checking method |
 
 <a name="Param"></a>
 ### Param
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| type | <code>Any<code> | Parameter type |
-| isParams | <code>Boolean</code> | (like C# params) variable number of arguments |
+| type | Any | Parameter type |
+| isParams | Boolean | (like C# params) variable number of arguments |
 
 <a name="Converter"></a>
 ### Converter(type, handler)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| type | <code>Any</code> | Converter type |
-| handler | <code>Function(string)</code> | Converter handler |
-
-<a name="Role"></a>
-### Role(options)
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| name | <code>String</code> | Role name |
-| extend | <code>Role[]</code> | Parent roles |
-| commands | <code>Command[]</code> | List of available commands |
+| type | Any | Converter type |
+| handler | Function(string) | Converter handler |

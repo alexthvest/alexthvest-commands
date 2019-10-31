@@ -1,7 +1,7 @@
 {
   "name": "@alexthvest/commands",
   "version": "1.1.0",
-  "description": "Commands execution",
+  "description": "Commands system",
   "main": "lib/index.js",
   "keywords": ["commands"],
   "homepage": "https://github.com/AlexVest/alexthvest-commands",

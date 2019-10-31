@@ -1,4 +1,4 @@
-const { Command, Converter, Executor } = require('../lib'); // @alexthvest/commands
+const { Command, Converter, Executor } = require('@alexthvest/commands');
 
 class User {
     constructor(name) {
