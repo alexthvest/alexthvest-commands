@@ -13,7 +13,12 @@ const create = new Command('create', {
     params: {
         name: {
             type: String,
-            isParams: true
+            isParams: true,
+            validate: (value, context) => {
+                const name = value.join(' ');
+                console.log(name);
+                return (name.length >= 6 && name.length <= 15) || 'Guild name length must be >= 6 and <= 15';
+            }
         }
     },
     execute: (params, context) => console.log(`New guild created: ${params.name.join(' ')}`)
