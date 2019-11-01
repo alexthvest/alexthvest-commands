@@ -1,4 +1,4 @@
-const { Command, Converter, Executor } = require('../lib'); // @alexthvest/commands
+const { Command, Converter, Executor } = require('../lib');
 
 class User {
     constructor(name) {
@@ -27,7 +27,7 @@ const invite = new Command('invite', {
 });
 
 const remove = new Command('remove', {
-    access: (params, context) => context.user.isCreator,
+    access: (params, context) => context.user.isCreator || 'You are not a creator of this guild',
     execute: (params, context) => console.log(`Guild removed`)
 })
 
@@ -42,4 +42,4 @@ const executor = new Executor({
 
 executor.execute('guild создать My New Guild').catch(console.error);
 executor.execute('guild invite alexthvest').catch(console.error);
-executor.execute('guild remove', { user: { isCreator: true } }).catch(console.error);
+executor.execute('guild remove', { user: { isCreator: false } }).catch(console.error);

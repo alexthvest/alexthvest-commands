@@ -9,7 +9,7 @@ Commands system with type converters and access system
 ## Usage
 
 ``` js
-    const { Command, Converter, Executor } = require('@alexthvest/commands');
+    const { Command, Converter, Executor } = require('../lib'); // @alexthvest/commands
 
     class User {
         constructor(name) {
@@ -20,6 +20,7 @@ Commands system with type converters and access system
     const userConverter = new Converter(User, (value, context) => new User(value));
 
     const create = new Command('create', {
+        aliases: ['создать'],
         params: {
             name: {
                 type: String,
@@ -37,7 +38,7 @@ Commands system with type converters and access system
     });
 
     const remove = new Command('remove', {
-        access: (params, context) => context.user.isCreator,
+        access: (params, context) => context.user.isCreator || 'You are not a creator of this guild',
         execute: (params, context) => console.log(`Guild removed`)
     })
 
@@ -50,9 +51,9 @@ Commands system with type converters and access system
         converters: [userConverter]
     });
 
-    executor.execute('guild create My New Guild').catch(console.error);
+    executor.execute('guild создать My New Guild').catch(console.error);
     executor.execute('guild invite alexthvest').catch(console.error);
-    executor.execute('guild remove', { user: { isCreator: true } }).catch(console.error);
+    executor.execute('guild remove', { user: { isCreator: false } }).catch(console.error);
 ```
 
 ## API Documentation
@@ -79,7 +80,7 @@ Commands system with type converters and access system
 | options.commands | Command[] | List of sub commands |
 | options.params | Object&lt;String, Param&gt; | List of commands parameters |
 | options.execute | Function(object, object) | Command action method |
-| options.access | Function(object, object): boolean | Command access checking method |
+| options.access | Function(object, object): boolean or string | Command access checking method, returns boolean or error message |
 
 <a name="Param"></a>
 ### Param
