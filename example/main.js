@@ -44,6 +44,6 @@ const executor = new Executor({
     converters: [userConverter]
 });
 
-executor.execute('guild создать My New Guild').catch(console.error);
-executor.execute('guild invite alexthvest').catch(console.error);
-executor.execute('guild remove', { user: { isCreator: false } }).catch(console.error);
+executor.execute('guild создать My New Guild dfgdfgdfgdfgdfg').catch(console.error);
+// executor.execute('guild invite alexthvest').catch(console.error);
+// executor.execute('guild remove', { user: { isCreator: false } }).catch(console.error);
