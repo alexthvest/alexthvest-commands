@@ -1,7 +1,6 @@
 const { Executor, Command } = require('../lib')
 
 const HiCommand = new Command('hi', {
-  aliases: ['hello'],
   params: {
     target: String
   },
@@ -11,9 +10,24 @@ const HiCommand = new Command('hi', {
   }
 })
 
-const executor = new Executor({
-  commands: [HiCommand]
+const HelloCommand = new Command('hello', {
+  params: {
+    targets: {
+      type: String,
+      isParams: true
+    }
+  },
+  
+  execute({ targets }) {
+    for (const target of targets) {
+      console.log(`Hello, ${target}!`)
+    }
+  }
 })
 
-executor.execute('hello World').catch(console.error)
+const executor = new Executor({
+  commands: [HiCommand, HelloCommand]
+})
+
+executor.execute('hello World Alex Harry Jerry').catch(console.error)
 executor.execute('hi everyone').catch(console.error)
