@@ -1,6 +1,6 @@
 # @alexthvest/commands
 
-Commands system with type converters and access system
+Commands system for bots
 
 ## Installation
 
@@ -16,7 +16,7 @@ npm i @alexthvest/commands
 
 ## Usage
 
-Example: https://github.com/AlexVest/alexthvest-commands/tree/master/example
+Examples: https://github.com/AlexVest/alexthvest-commands/tree/master/examples
 
 ## API Documentation
 
@@ -42,7 +42,8 @@ Example: https://github.com/AlexVest/alexthvest-commands/tree/master/example
 | options.commands | Command[] | List of sub commands |
 | options.params | Object&lt;String, Param&gt; | List of commands parameters |
 | options.execute | Function(params, context) | Command action method |
-| options.access | Function(params, context): boolean or string | Command access checking method, returns boolean or error message |
+| options.access | Function(context): boolean or string | Command access checking method, returns boolean or error message |
+| options.validate | Function(params, context): boolean or string | Parameters validation method |
 
 <a name="Param"></a>
 ### Param
@@ -51,7 +52,6 @@ Example: https://github.com/AlexVest/alexthvest-commands/tree/master/example
 | ---- | ---- | ----------- |
 | type | Any | Parameter type |
 | isParams | Boolean | (like C# params) variable number of arguments |
-| validate | Function(value, context): boolean or string | Parameter validate function, returns boolean or error message |
 
 <a name="Converter"></a>
 ### Converter(type, handler)
@@ -59,4 +59,4 @@ Example: https://github.com/AlexVest/alexthvest-commands/tree/master/example
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | type | Any | Converter type |
-| handler | Function(value, context) | Converter handler |
+| handler | Function(value, context): {error?: string, value?: any} | Converter handler |

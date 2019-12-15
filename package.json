@@ -1,9 +1,9 @@
 {
   "name": "@alexthvest/commands",
   "version": "1.1.7",
-  "description": "Commands system",
+  "description": "Commands system for bots",
   "main": "lib/index.js",
-  "keywords": ["commands"],
+  "keywords": ["commands", "bots"],
   "homepage": "https://github.com/AlexVest/alexthvest-commands",
   "repository": {
     "type": "git",
