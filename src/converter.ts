@@ -3,7 +3,7 @@ export abstract class Converter {
   public abstract convert(value: string): ConverterResult
 }
 
-interface ConverterResult {
+export interface ConverterResult {
   error?: string
   value?: any
 }
