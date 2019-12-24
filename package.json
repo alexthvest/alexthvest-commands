@@ -3,7 +3,10 @@
   "version": "1.2.2",
   "description": "Commands system for bots",
   "main": "lib/index.js",
-  "keywords": ["commands", "bots"],
+  "keywords": [
+    "commands",
+    "bots"
+  ],
   "homepage": "https://github.com/AlexVest/alexthvest-commands",
   "repository": {
     "type": "git",
@@ -13,5 +16,11 @@
     "name": "alexthvest",
     "email": "alexthvest@gmail.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.4"
+  }
 }
