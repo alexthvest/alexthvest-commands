@@ -36,13 +36,55 @@ export class Executor {
     if (!command) return false
 
     if (!await this._executeCommands(command.commands, args, ctx)) {
+      if (typeof command.execute !== 'function') return false
+
+      if (!this._hasRestParams(command) && args.length !== Object.keys(command.params).length)
+        throw new Error('Parameters count mismatch')
+
+      const processedArgs = await this._processArgs(command, args, ctx)
       const middleware = [...this._middleware, ctx => command.execute(ctx.args, ctx.ctx)]
-      await this._nextMiddleware(middleware, 0, { command, args, ctx })
+
+      await this._nextMiddleware(middleware, 0, {
+        command,
+        args: processedArgs,
+        ctx,
+      })
 
       return true
     }
 
     return false
+  }
+
+  private async _processArgs(command: Command, args: string[], ctx: any): Promise<object> {
+    const processedArgs = {}
+    const keys = Object.keys(command.params)
+
+    for (let i = 0; i < keys.length; i++) {
+      const param = { name: keys[i], type: command.params[keys[i]] }
+      processedArgs[param.name] = Array.isArray(param.type) ? [] : null
+    }
+
+    for (let i = 0; i < args.length; i++) {
+      const index = keys.length <= i ? keys.length - 1 : i
+      const param = { name: keys[index], type: command.params[keys[index]], isParams: false }
+
+      if (Array.isArray(param.type)) {
+        param.type = param.type[0]
+        param.isParams = true
+      }
+
+      const converter = this._converters.find(c => c.type === param.type)
+      if (!converter) throw new Error(`Converter for type \`${param.type}\` is not defined`)
+
+      const { value, error } = await converter.convert(args[i], ctx)
+      if (error) throw new Error(error)
+
+      if (param.isParams) processedArgs[param.name].push(value)
+      else processedArgs[param.name] = value
+    }
+
+    return processedArgs
   }
 
   private async _nextMiddleware(middleware: Middleware[], index: number, ctx: MiddlewareContext) {
@@ -58,6 +100,13 @@ export class Executor {
       if (typeof p === 'string') return pattern === p
       return pattern.match(p)
     })
+  }
+
+  private _hasRestParams(command: Command): boolean {
+    const values = Object.values(command.params).filter(v => Array.isArray(v))
+    if (values.length > 1) throw new Error('Command must have only one rest param')
+
+    return values.length === 1
   }
 }
 

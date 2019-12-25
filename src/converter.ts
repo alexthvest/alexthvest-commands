@@ -1,6 +1,6 @@
 export abstract class Converter {
   public abstract type
-  public abstract convert(value: string): ConverterResult
+  public abstract convert(value: string, ctx: any): ConverterResult
 }
 
 export interface ConverterResult {
