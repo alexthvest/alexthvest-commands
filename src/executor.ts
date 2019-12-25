@@ -1,6 +1,12 @@
 import { Command } from './command'
 import { Converter } from './converter'
 import { NumberConverter, StringConverter, BooleanConverter } from './defaults/converters'
+import {
+  ConvertError,
+  NoConverterForTypeError,
+  ParametersCountMismatchError,
+  TooManyRestParametersError
+} from './errors'
 
 export class Executor {
   private readonly _commands: Command[]
@@ -64,7 +70,7 @@ export class Executor {
     const keys = Object.keys(command.params)
 
     if (!this._hasRestParams(command) && args.length !== keys.length)
-      throw new Error('Parameters count mismatch')
+      throw new ParametersCountMismatchError()
 
     for (let i = 0; i < keys.length; i++) {
       const param = { name: keys[i], type: command.params[keys[i]] }
@@ -81,10 +87,10 @@ export class Executor {
       }
 
       const converter = this._converters.find(c => c.hasOwnProperty('type') && c.type === param.type)
-      if (!converter) throw new Error(`Converter for type \`${param.type}\` is not defined`)
+      if (!converter) throw new NoConverterForTypeError(param.type || {})
 
       const { value, error } = await converter.convert(args[i], ctx)
-      if (error) throw new Error(error)
+      if (error) throw new ConvertError(error)
 
       if (param.isParams) processedArgs[param.name].push(value)
       else processedArgs[param.name] = value
@@ -114,7 +120,7 @@ export class Executor {
     if (!command.params) return false
 
     const values = Object.values(command.params).filter(v => Array.isArray(v))
-    if (values.length > 1) throw new Error('Command must have only one rest param')
+    if (values.length > 1) throw new TooManyRestParametersError()
 
     return values.length === 1
   }
