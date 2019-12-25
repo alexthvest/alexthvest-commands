@@ -1,6 +1,6 @@
 import { Command } from './command'
 import { Converter } from './converter'
-import { NumberConverter, StringConverter, BooleanConverter } from './defaults/converters'
+import { NumberConverter, StringConverter, BooleanConverter } from './converters'
 import {
   ConvertError,
   NoConverterForTypeError,

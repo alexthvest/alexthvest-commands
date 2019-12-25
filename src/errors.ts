@@ -5,7 +5,7 @@ export class ParametersCountMismatchError extends Error {
 }
 
 export class NoConverterForTypeError extends Error {
-  constructor(type) {
+  constructor(type: any) {
     super(`No such converter for type ${type.name || ''}`.trim());
   }
 }

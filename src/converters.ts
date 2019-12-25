@@ -1,4 +1,4 @@
-import { Converter, ConverterResult } from '../converter'
+import { Converter, ConverterResult } from './converter'
 
 export class StringConverter extends Converter {
   type = String
