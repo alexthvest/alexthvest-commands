@@ -18,5 +18,5 @@ npm i @alexthvest/commands
 
 Examples: https://github.com/AlexVest/alexthvest-commands/tree/master/examples
 
-- require('@alexthvest/commands/errors') - Contains all errors
-- require('@alexthvest/commands/middleware') - Contains default middleware
+- require('@alexthvest/commands/lib/errors') - Contains all errors
+- require('@alexthvest/commands/lib/middleware') - Contains default middleware
